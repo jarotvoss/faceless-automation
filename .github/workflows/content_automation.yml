@@ -1,9 +1,9 @@
 name: Faceless Video Automation
 
 on:
-  workflow_dispatch: # Allows manual trigger from iPad GitHub app / web
+  workflow_dispatch:
   schedule:
-    - cron: '0 8 * * *' # Runs daily at 08:00 UTC (optional automation schedule)
+    - cron: '0 8 * * *'
 
 jobs:
   build-video:
@@ -21,6 +21,10 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y ffmpeg imagemagick
+
+      - name: Fix ImageMagick Security Policy
+        run: |
+          sudo sed -i 's/rights="none" pattern="@\*"/rights="read|write" pattern="@\*"/g' /etc/ImageMagick-6/policy.xml || true
 
       - name: Install Python Libraries
         run: |
